@@ -1,0 +1,62 @@
+<!doctype html>
+<title>Small Gallery website</title>
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(document).on("click",".del",
+        function() {
+            console.log("heyyyy");
+            $.getJSON('/delete_image', {
+                item: $(this).attr("imurl"),
+            }, function(data) {
+                location.reload();
+            });
+        }
+    );
+    </script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function nextImage(){
+        $.getJSON('/get_next_image_url', {
+            img_url: $('#gallery').attr("src"),
+        }, function(data) {
+            $('#gallery').attr("src",data.imageUrl)
+        });
+    }
+    nextImage();
+    // setInterval(function(){
+    //     nextImage()
+    // }, 7000);
+</script>
+
+
+</head>
+<body style="background-color:white; margin:2px";>
+        
+    <center>
+        <br><br>
+    <h1 style="color:black">Upload a file here</h1>
+    <form method=post enctype=multipart/form-data >
+        <p><input type=file name=file>
+            <input type=submit value=Upload>
+        </form>
+        <br>
+        <img id="gallery" style="max-width: 50%; max-height:100vh;"/>
+        <br><br>    
+
+    <button onclick=nextImage()>PREV</button>&nbsp &nbsp &nbsp<button onclick=nextImage()>NEXT</button>
+    <br><br><br>
+    {% for item in range(files|length) %}
+        <a href="{{ files[item] }}"><img src="{{files[item]}}"width="100px" height="100px"></a><a class="del" imurl="{{filenames[item]}}" href="#"></a>
+    {% endfor %}
+    </center>
+    <br><br>
+    <!-- <center><img id="gallery" style="width:50%"/></center> -->
+    <!-- <center><button onclick=location.href="{{ url_for('upload_file') }}">Upload image</button></center> -->
+    <center><button onclick=location.href="{{ url_for('list_files') }}">List image</button></center>
+    <br>
+    <center><button onclick=location.href="{{ url_for('delete_image') }}">Delete image</button></center>
+    <br>
+    <br>
+</body>

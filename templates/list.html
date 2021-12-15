@@ -1,0 +1,22 @@
+<!doctype html>
+<title>List</title>
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(document).on("click",".del",
+        function() {
+            console.log("heyyyy");
+            $.getJSON('/delete_image', {
+                item: $(this).attr("imurl"),
+            }, function(data) {
+                location.reload();
+            });
+        }
+    );
+    </script>
+</head>
+<body>
+   {% for item in range(files|length) %}
+        <li><a href="{{ files[item] }}"><img src="{{files[item]}}"style="max-width: 20%"></a><a class="del" imurl="{{filenames[item]}}" href="#"></a></li></li>
+    {% endfor %}
+</body>
